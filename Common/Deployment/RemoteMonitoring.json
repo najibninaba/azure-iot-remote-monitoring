@@ -74,14 +74,14 @@
         },
         "iotHubSku": {
             "type": "string",
-            "defaultValue": "S2",
+            "defaultValue": "F1",
             "metadata": {
                 "description": "The Iothub Sku"
             }
         },
         "iotHubTier": {
             "type": "string",
-            "defaultValue": "Standard",
+            "defaultValue": "Free",
             "metadata": {
                 "description": "The Iothub tier"
             }
@@ -109,7 +109,7 @@
         },
         "webSku": {
             "type": "string",
-            "defaultValue": "Premium",
+            "defaultValue": "Basic",
             "metadata": {
                 "description": "The Sku type of the webapp"
             }
@@ -130,7 +130,7 @@
         },
         "webJobSku": {
             "type": "string",
-            "defaultValue": "Standard",
+            "defaultValue": "Basic",
             "metadata": {
                 "description": "The Sku type of the webjob"
             }
