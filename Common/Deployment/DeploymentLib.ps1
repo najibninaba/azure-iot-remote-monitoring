@@ -1,4 +1,5 @@
-﻿function ImportLibraries(){
+﻿function ImportLibraries()
+{
     $success = $true
     $mydocuments = [environment]::getfolderpath("mydocuments")
     $nugetPath = "{0}\Nugets" -f $mydocuments
@@ -542,7 +543,7 @@ function GetAzureAccountInfo()
     if ($accounts -eq $null)
     {
         Write-Host "Signing you into Azure..."
-        $account = Add-AzureAccount
+        $account = Add-AzureAccount -Environment $global:azureEnvironment.Name
     }
     else 
     {
@@ -566,7 +567,7 @@ function GetAzureAccountInfo()
 
             if ($selectedIndex -eq $accounts.length + 1)
             {
-                $account = Add-AzureAccount
+                $account = Add-AzureAccount -Environment $global:azureEnvironment.Name
                 break;
             }
                 
@@ -858,7 +859,7 @@ function InitializeEnvironment()
         $global:envSettingsXml = [xml](cat $global:environmentSettingsFile)
     }
 
-    $global:AzureAccountName = GetOrSetEnvSetting "AzureAccountName" "GetAzureAccountInfo"
+    $global:AzureAccountName = GetOrSetEnvSetting "AzureAccountName" "GetAzureAccountInfo" 
     ValidateLoginCredentials
 
     if ([string]::IsNullOrEmpty($global:SubscriptionId))
@@ -893,12 +894,15 @@ function InitializeEnvironment()
                 
                 $global:SubscriptionId = $subscriptions[$selectedIndex - 1].SubscriptionId
             }
+
             UpdateEnvSetting "SubscriptionId" $global:SubscriptionId
         }
     }
     
     Select-AzureSubscription -SubscriptionId $global:SubscriptionId
-    Select-AzureRmSubscription -SubscriptionId $global:SubscriptionId
+
+	$rmSubscription = Get-AzureRmSubscription -SubscriptionId $global:SubscriptionId
+	Select-AzureRmSubscription -SubscriptionName $rmSubscription.SubscriptionName -TenantId $rmSubscription.TenantId
 
     if ([string]::IsNullOrEmpty($global:AllocationRegion))
     {
